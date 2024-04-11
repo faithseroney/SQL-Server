@@ -1,0 +1,24 @@
+ ---find the Nth highest salary using a subquery
+
+  select Top 1 Salary
+  FROM
+  (
+  SELECT DISTINCT TOP N Salary  
+  from [tblEmployee]
+  order by Salary desc
+  ) Result
+  Order By Salary
+
+  ---Getting the Nth salary using a CTE
+  
+---create a CTE called RESULT
+  GO
+  WITH RESULT AS
+  (
+  Select Salary, DENSE_RANK() OVER (ORDER BY Salary desc) DenseRank
+  from [tblEmployee]
+  )
+---Query the CTE above
+  SELECT TOP 1 Salary
+  FROM RESULT
+  WHERE RESULT.DenseRank =  N
